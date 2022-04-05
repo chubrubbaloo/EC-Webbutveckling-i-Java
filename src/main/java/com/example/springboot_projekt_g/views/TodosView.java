@@ -31,34 +31,34 @@ public class TodosView extends VerticalLayout {
         grid.setWidthFull();
 
         grid.addComponentColumn(blogPost -> {
-            Button button = new Button(new Icon(VaadinIcon.TRASH), evt -> {
+            Button deleteButton = new Button(new Icon(VaadinIcon.TRASH), evt -> {
 
                 todoService.removeById(blogPost.getId());
                 updateItems();
 
             });
+            deleteButton.addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_PRIMARY);
 
-            button.addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_PRIMARY);
-
-            return button;
+            return deleteButton;
         });
 
         grid.addColumn(Todo::getTitle).setHeader("Titel").setResizable(true).setSortable(true);
         grid.addColumn(Todo::getMessage).setHeader("Att göra").setSortable(true);
         grid.asSingleSelect().addValueChangeListener(evt -> todoForm.setTodo(evt.getValue()));
 
-        Button button = new Button("Ny uppgift", evt->{
+        Button addButton = new Button("Ny uppgift", evt->{
             Dialog modal = new Dialog();
             TodoForm modalForm = new TodoForm(todoService, this);
             modalForm.setTodo(new Todo());
             modal.add(modalForm);
             modal.open();
         });
+        addButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_LARGE);
 
-        VerticalLayout mainContent = new VerticalLayout(grid, todoForm);
+        VerticalLayout mainContent = new VerticalLayout(grid, todoForm,new Hr());
         mainContent.setSizeFull();
 
-        add(mainContent,button);
+        add(mainContent,addButton);
 
     }
 
