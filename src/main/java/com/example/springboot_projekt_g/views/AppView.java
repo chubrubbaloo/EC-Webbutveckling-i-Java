@@ -22,7 +22,7 @@ public class AppView extends AppLayout {
         HorizontalLayout navbarLayout = new HorizontalLayout();
         navbarLayout.setWidthFull();
 
-        RouterLink todoViewLink = new RouterLink("Se uppgifter", TodoView.class);
+        RouterLink todoViewLink = new RouterLink("Hem", TodoView.class);
         RouterLink manageTodosLink = new RouterLink("Hantera uppgifter", ManageTodosView.class);
 
         navbarLayout.setJustifyContentMode(FlexComponent.JustifyContentMode.END);
