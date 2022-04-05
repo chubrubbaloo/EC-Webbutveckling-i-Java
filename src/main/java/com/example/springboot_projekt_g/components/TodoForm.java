@@ -4,10 +4,8 @@ import com.example.springboot_projekt_g.entities.Todo;
 import com.example.springboot_projekt_g.service.TodoService;
 import com.example.springboot_projekt_g.views.TodosView;
 import com.vaadin.flow.component.button.Button;
-import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
-import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
@@ -16,7 +14,7 @@ import com.vaadin.flow.data.binder.Binder;
 public class TodoForm extends FormLayout {
 
     TextField title = new TextField("Titel");
-    TextArea message = new TextArea("Uppgift");
+    TextArea message = new TextArea("Att göra");
     Button saveButton = new Button("Spara");
 
 
