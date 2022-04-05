@@ -17,8 +17,8 @@ public class SpringBootProjektGApplication {
     CommandLineRunner init(TodoRepository todoRepository) {
         return args -> {
 
-            Todo toDo = new Todo("Studier", "Lär dig Spring Boot & Thymeleaf.");
-            Todo secondTodo = new Todo("Hälsa","Få in 30 minuters motion för dagen.");
+            Todo toDo = new Todo("Studier", "Bygg klart CRUD-projektet.");
+            Todo secondTodo = new Todo("Hälsa","Få in 45 minuters sol för dagen.");
             todoRepository.save(toDo);
             todoRepository.save(secondTodo);
 
