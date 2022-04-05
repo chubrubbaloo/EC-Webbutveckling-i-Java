@@ -12,16 +12,16 @@ public class Todo {
 
     @Column
     @NotBlank
-    private String title;
+    private String category;
 
     @Column
     @NotBlank
-    private String message;
+    private String todo;
 
 
-    public Todo(String title, String message) {
-        this.title = title;
-        this.message = message;
+    public Todo(String category, String todo) {
+        this.category = category;
+        this.todo = todo;
     }
 
     public Todo() {
@@ -31,24 +31,24 @@ public class Todo {
         this.id = id;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
+    public void setCategory(String category) {
+        this.category = category;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public void setTodo(String todo) {
+        this.todo = todo;
     }
 
     public int getId() {
         return id;
     }
 
-    public String getTitle() {
-        return title;
+    public String getCategory() {
+        return category;
     }
 
-    public String getMessage() {
-        return message;
+    public String getTodo() {
+        return todo;
     }
 
 }

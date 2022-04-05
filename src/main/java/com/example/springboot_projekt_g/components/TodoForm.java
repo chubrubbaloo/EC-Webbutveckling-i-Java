@@ -13,16 +13,13 @@ import com.vaadin.flow.data.binder.Binder;
 
 public class TodoForm extends FormLayout {
 
-    TextField title = new TextField("Titel");
-    TextArea message = new TextArea("Att göra");
+    TextField category = new TextField("Kategori");
+    TextArea todo = new TextArea("Att göra");
     Button saveButton = new Button("Spara");
-
-
 
     Binder<Todo> binder = new BeanValidationBinder<>(Todo.class);
     TodoService todoService;
     TodosView todosView;
-
 
     public TodoForm(TodoService todoService, TodosView todosView) {
         this.todosView = todosView;
@@ -31,7 +28,7 @@ public class TodoForm extends FormLayout {
 
         saveButton.addClickListener(evt -> handleSave());
 
-        add(title, message, saveButton);
+        add(category, todo, saveButton);
 
         setVisible(false);
 
