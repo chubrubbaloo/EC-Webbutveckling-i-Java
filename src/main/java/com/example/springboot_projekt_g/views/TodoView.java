@@ -5,7 +5,7 @@ import com.vaadin.flow.component.html.*;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 // Main-sidan.
-@Route(value = "/", layout = AppView.class)
+@Route(value = "/todos", layout = AppView.class)
 public class TodoView extends VerticalLayout {
 
     public TodoView(TodoService todoService) {

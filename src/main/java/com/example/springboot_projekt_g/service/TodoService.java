@@ -28,5 +28,18 @@ public class TodoService {
         return toDoRepository.save(todo);
     }
 
+    public Todo updateById(int id, Todo changedTodo) {
+        Todo existingTodo = toDoRepository.findById(id).orElseThrow();
+
+        if(changedTodo.getTitle() != null)
+            existingTodo.setTitle(changedTodo.getTitle());
+        if(changedTodo.getMessage() != null)
+            existingTodo.setMessage(changedTodo.getMessage());
+
+        toDoRepository.save(existingTodo);
+
+        return existingTodo;
+    }
+
 }
 

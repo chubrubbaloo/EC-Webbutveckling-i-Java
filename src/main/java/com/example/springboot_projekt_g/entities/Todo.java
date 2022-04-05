@@ -1,6 +1,7 @@
 package com.example.springboot_projekt_g.entities;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 public class Todo {
@@ -10,9 +11,11 @@ public class Todo {
     private int id;
 
     @Column
+    @NotBlank
     private String title;
 
     @Column
+    @NotBlank
     private String message;
 
 
