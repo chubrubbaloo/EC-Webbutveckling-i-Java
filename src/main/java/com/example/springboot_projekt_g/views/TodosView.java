@@ -11,22 +11,21 @@ import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
-@Route(value = "/managetodos", layout = AppView.class)
-public class ManageTodosView extends VerticalLayout {
+@Route("/todo")
+public class TodosView extends VerticalLayout {
 
     Grid<Todo> grid = new Grid<>(Todo.class, false);
     TodoService todoService;
     TodoForm todoForm;
 
-    public ManageTodosView(TodoService todoService) {
+    public TodosView(TodoService todoService) {
         this.todoService = todoService;
         this.todoForm = new TodoForm(todoService,this);
         setAlignItems(Alignment.CENTER);
-        add(new H2("Hantera dina uppgifter"), new Hr());
+        add(new H2("Välkommen till din att-göra-lista"), new Hr());
 
         grid.setItems(todoService.findAll());
         grid.setWidthFull();
@@ -44,8 +43,8 @@ public class ManageTodosView extends VerticalLayout {
             return button;
         });
 
-        grid.addColumn(Todo::getTitle).setHeader("Titel").setSortable(true).setResizable(true);
-        grid.addColumn(Todo::getMessage).setHeader("Uppgift").setSortable(true);
+        grid.addColumn(Todo::getTitle).setHeader("Titel").setResizable(true).setSortable(true);
+        grid.addColumn(Todo::getMessage).setHeader("Att göra").setSortable(true);
         grid.asSingleSelect().addValueChangeListener(evt -> todoForm.setTodo(evt.getValue()));
 
         Button button = new Button("Ny uppgift", evt->{
@@ -56,7 +55,7 @@ public class ManageTodosView extends VerticalLayout {
             modal.open();
         });
 
-        HorizontalLayout mainContent = new HorizontalLayout(grid, todoForm);
+        VerticalLayout mainContent = new VerticalLayout(grid, todoForm);
         mainContent.setSizeFull();
 
         add(mainContent,button);

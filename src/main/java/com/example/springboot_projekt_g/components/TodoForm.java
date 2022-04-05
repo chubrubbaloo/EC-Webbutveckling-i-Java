@@ -2,7 +2,7 @@ package com.example.springboot_projekt_g.components;
 
 import com.example.springboot_projekt_g.entities.Todo;
 import com.example.springboot_projekt_g.service.TodoService;
-import com.example.springboot_projekt_g.views.ManageTodosView;
+import com.example.springboot_projekt_g.views.TodosView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
@@ -19,10 +19,10 @@ public class TodoForm extends FormLayout {
 
     Binder<Todo> binder = new BeanValidationBinder<>(Todo.class);
     TodoService todoService;
-    ManageTodosView manageTodosView;
+    TodosView todosView;
 
-    public TodoForm(TodoService todoService, ManageTodosView manageTodosView) {
-        this.manageTodosView = manageTodosView;
+    public TodoForm(TodoService todoService, TodosView todosView) {
+        this.todosView = todosView;
         this.todoService = todoService;
         binder.bindInstanceFields(this);
 
@@ -42,7 +42,7 @@ public class TodoForm extends FormLayout {
             todoService.updateById(todo.getId(), todo);
         }
         setTodo(null);
-        manageTodosView.updateItems();
+        todosView.updateItems();
 
         this.getParent().ifPresent(component -> {
             if (component instanceof Dialog) {
