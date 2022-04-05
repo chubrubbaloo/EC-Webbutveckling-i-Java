@@ -5,6 +5,7 @@ import com.example.springboot_projekt_g.entities.Todo;
 import com.example.springboot_projekt_g.service.TodoService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H2;
 import com.vaadin.flow.component.html.Hr;
@@ -45,12 +46,20 @@ public class ManageTodosView extends VerticalLayout {
 
         grid.addColumn(Todo::getTitle).setHeader("Titel").setSortable(true).setResizable(true);
         grid.addColumn(Todo::getMessage).setHeader("Uppgift").setSortable(true);
-        grid.asSingleSelect().addValueChangeListener(evt -> todoForm.setBlogPost(evt.getValue()));
+        grid.asSingleSelect().addValueChangeListener(evt -> todoForm.setTodo(evt.getValue()));
+
+        Button button = new Button("Ny uppgift", evt->{
+            Dialog modal = new Dialog();
+            TodoForm modalForm = new TodoForm(todoService, this);
+            modalForm.setTodo(new Todo());
+            modal.add(modalForm);
+            modal.open();
+        });
 
         HorizontalLayout mainContent = new HorizontalLayout(grid, todoForm);
         mainContent.setSizeFull();
 
-        add(mainContent);
+        add(mainContent,button);
 
     }
 
