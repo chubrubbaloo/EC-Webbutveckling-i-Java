@@ -58,7 +58,9 @@ public class TodosView extends VerticalLayout {
         VerticalLayout mainContent = new VerticalLayout(grid, todoForm,new Hr());
         mainContent.setSizeFull();
 
-        add(mainContent,addButton);
+         Button signButton = new Button("Logga in");
+
+        add(mainContent,addButton, signButton);
 
     }
 
