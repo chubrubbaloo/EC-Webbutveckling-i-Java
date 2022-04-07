@@ -1,6 +1,7 @@
 package com.example.springboot_projekt_g.views;
 
 import com.example.springboot_projekt_g.components.TodoForm;
+import com.example.springboot_projekt_g.entities.AppUser;
 import com.example.springboot_projekt_g.entities.Todo;
 import com.example.springboot_projekt_g.service.TodoService;
 import com.vaadin.flow.component.button.Button;
@@ -14,12 +15,15 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
+import java.util.Date;
+
 @Route("/todo")
 public class TodosView extends VerticalLayout {
 
     Grid<Todo> grid = new Grid<>(Todo.class, false);
     TodoService todoService;
     TodoForm todoForm;
+
 
     public TodosView(TodoService todoService) {
         this.todoService = todoService;
@@ -41,6 +45,9 @@ public class TodosView extends VerticalLayout {
 
             return deleteButton;
         });
+
+
+
 
         grid.addColumn(Todo::getCategory).setHeader("Kategori").setResizable(true).setSortable(true);
         grid.addColumn(Todo::getTodo).setHeader("Att göra").setSortable(true);

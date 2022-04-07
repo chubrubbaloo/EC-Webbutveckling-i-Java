@@ -18,13 +18,26 @@ public class Todo {
     @NotBlank
     private String todo;
 
+    @ManyToOne
+    @JoinColumn(name = "appuser_id") // Våran foreign key som referar till våran primary key i AppUser.
+    private AppUser appUser; // Referens till den appanvändaren som har skrivit todon.
 
-    public Todo(String category, String todo) {
+
+    public Todo(String category, String todo, AppUser appUser) {
         this.category = category;
         this.todo = todo;
+        this.appUser = appUser;
     }
 
     public Todo() {
+    }
+
+    public AppUser getAppUser() {
+        return appUser;
+    }
+
+    public void setAppUser(AppUser appUser) {
+        this.appUser = appUser;
     }
 
     public void setId(int id) {
