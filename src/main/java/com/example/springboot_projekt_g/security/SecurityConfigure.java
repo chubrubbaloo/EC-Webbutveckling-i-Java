@@ -4,6 +4,7 @@ import com.example.springboot_projekt_g.entities.AppUser;
 import com.example.springboot_projekt_g.views.LoginView;
 import com.vaadin.flow.spring.security.VaadinWebSecurityConfigurerAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,7 +13,9 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @EnableWebSecurity
 @Configuration // För att spring boot ska plocka upp den (komponent).
@@ -22,6 +25,12 @@ public class SecurityConfigure extends VaadinWebSecurityConfigurerAdapter { // E
     UserDetailsService userDetailsService;
     public SecurityConfigure(UserDetailsService userDetailsService) {
         this.userDetailsService = userDetailsService;
+    }
+
+    @Bean
+        // Det här är något man kommer kunna komma åt även i andra klasser i spring boot.
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
     }
 
     @Override
@@ -36,7 +45,7 @@ public class SecurityConfigure extends VaadinWebSecurityConfigurerAdapter { // E
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 
         //
-        auth.userDetailsService(userDetailsService).passwordEncoder(NoOpPasswordEncoder.getInstance()); // Ingen kryptering för tillfället.
+        auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder()); // Krypterar lösen.
     }
 
     /*

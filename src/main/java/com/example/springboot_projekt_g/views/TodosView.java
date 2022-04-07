@@ -1,7 +1,6 @@
 package com.example.springboot_projekt_g.views;
 
 import com.example.springboot_projekt_g.components.TodoForm;
-import com.example.springboot_projekt_g.entities.AppUser;
 import com.example.springboot_projekt_g.entities.Todo;
 import com.example.springboot_projekt_g.service.TodoService;
 import com.vaadin.flow.component.button.Button;
@@ -14,6 +13,8 @@ import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
+import com.vaadin.flow.server.VaadinServletRequest;
+import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
 
 import javax.annotation.security.PermitAll;
 
@@ -47,9 +48,6 @@ public class TodosView extends VerticalLayout {
             return deleteButton;
         });
 
-
-
-
         grid.addColumn(Todo::getCategory).setHeader("Kategori").setResizable(true).setSortable(true);
         grid.addColumn(Todo::getTodo).setHeader("Att göra").setSortable(true);
         grid.asSingleSelect().addValueChangeListener(evt -> todoForm.setTodo(evt.getValue()));
@@ -66,7 +64,7 @@ public class TodosView extends VerticalLayout {
         VerticalLayout mainContent = new VerticalLayout(grid, todoForm,new Hr());
         mainContent.setSizeFull();
 
-         Button signOutButton = new Button("Logga ut");
+        Button signOutButton = new Button("Logga ut", evt -> logout());
 
         add(mainContent,addButton, signOutButton);
 
@@ -75,5 +73,10 @@ public class TodosView extends VerticalLayout {
 
     public void updateItems(){
         grid.setItems(todoService.findAll());
+    }
+
+    public void logout(){
+        new SecurityContextLogoutHandler()
+                .logout(VaadinServletRequest.getCurrent().getHttpServletRequest(), null, null);
     }
 }
