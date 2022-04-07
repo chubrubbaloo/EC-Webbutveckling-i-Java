@@ -15,9 +15,10 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
-import java.util.Date;
+import javax.annotation.security.PermitAll;
 
-@Route("/todo")
+@PermitAll
+@Route("/")
 public class TodosView extends VerticalLayout {
 
     Grid<Todo> grid = new Grid<>(Todo.class, false);
@@ -65,9 +66,10 @@ public class TodosView extends VerticalLayout {
         VerticalLayout mainContent = new VerticalLayout(grid, todoForm,new Hr());
         mainContent.setSizeFull();
 
-         Button signButton = new Button("Logga in");
+         Button signOutButton = new Button("Logga ut");
 
-        add(mainContent,addButton, signButton);
+        add(mainContent,addButton, signOutButton);
+
 
     }
 

@@ -15,17 +15,29 @@ public class AppUser {
     @Column(nullable = false ,unique = true)
     private String username;
 
+    @Column
+    private String password;
+
     @OneToMany(mappedBy = "appUser") // Om det skulle finnas en inkonsistens så markerar vi att denna sidan får ge sig
                                     // todon blir den ägande sidan.
     @JsonIgnoreProperties("appUser")
     private Set<Todo> todos; // En kollektion av todos och en referens till alla todos som denna appusern har addat.
 
 
-    public AppUser(String username) {
+    public AppUser(String username, String password) {
         this.username = username;
+        this.password = password;
     }
 
     public AppUser(){
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Set<Todo> getTodos() {

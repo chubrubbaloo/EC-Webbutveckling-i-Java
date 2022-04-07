@@ -9,6 +9,8 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
+import java.util.List;
+
 @SpringBootApplication
 public class SpringBootProjektGApplication {
 
@@ -19,7 +21,7 @@ public class SpringBootProjektGApplication {
     CommandLineRunner init(TodoRepository todoRepository, AppUserRepository appUserRepository) {
         return args -> {
 
-            AppUser haris = new AppUser("Haris");
+            AppUser haris = new AppUser("Haris","pass");
             appUserRepository.save(haris);
 
 
