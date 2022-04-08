@@ -35,6 +35,8 @@ public class TodoService {
             existingTodo.setCategory(changedTodo.getCategory());
         if(changedTodo.getTodo() != null)
             existingTodo.setTodo(changedTodo.getTodo());
+        if (changedTodo.getPriority()!=null)
+            existingTodo.setPriority(changedTodo.getPriority());
 
         toDoRepository.save(existingTodo);
 
