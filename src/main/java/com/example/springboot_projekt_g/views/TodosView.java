@@ -48,8 +48,9 @@ public class TodosView extends VerticalLayout {
             return deleteButton;
         });
 
-        grid.addColumn(Todo::getCategory).setHeader("Kategori").setResizable(true).setSortable(true);
-        grid.addColumn(Todo::getTodo).setHeader("Att göra").setSortable(true);
+        grid.addColumn(Todo::getCategory).setHeader("Kategori").setResizable(true);
+        grid.addColumn(Todo::getTodo).setHeader("Att göra").setResizable(true);
+        grid.addColumn(Todo::getPriority).setHeader("Prioritetsnivå").setSortable(true);
         grid.asSingleSelect().addValueChangeListener(evt -> todoForm.setTodo(evt.getValue()));
 
         Button addButton = new Button("Ny uppgift", evt->{

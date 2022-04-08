@@ -32,8 +32,8 @@ public class SpringBootProjektGApplication {
             appUserRepository.save(karl);
 
 
-            Todo toDo = new Todo("Studier", "Bygg klart CRUD-projektet.",haris);
-            Todo secondTodo = new Todo("Hälsa","Få in 45 minuters sol för dagen.",karl);
+            Todo toDo = new Todo("Studier", "Bygg klart CRUD-projektet.",haris,"2");
+            Todo secondTodo = new Todo("Hälsa","Få in 45 minuters sol för dagen.",karl,"1");
             todoRepository.save(toDo);
             todoRepository.save(secondTodo);
 

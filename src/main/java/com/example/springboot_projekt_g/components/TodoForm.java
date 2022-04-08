@@ -6,6 +6,8 @@ import com.example.springboot_projekt_g.views.TodosView;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.radiobutton.RadioButtonGroup;
+import com.vaadin.flow.component.radiobutton.RadioGroupVariant;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
@@ -15,6 +17,7 @@ public class TodoForm extends FormLayout {
 
     TextField category = new TextField("Kategori");
     TextArea todo = new TextArea("Att göra");
+    RadioButtonGroup<String> priority = new RadioButtonGroup<>();
     Button saveButton = new Button("Spara");
 
     Binder<Todo> binder = new BeanValidationBinder<>(Todo.class);
@@ -28,7 +31,11 @@ public class TodoForm extends FormLayout {
 
         saveButton.addClickListener(evt -> handleSave());
 
-        add(category, todo, saveButton);
+        priority.addThemeVariants(RadioGroupVariant.LUMO_HELPER_ABOVE_FIELD);
+        priority.setLabel("Prioritetsnivå");
+        priority.setItems("1","2","3");
+
+        add(category, todo, priority, saveButton);
 
         setVisible(false);
 
