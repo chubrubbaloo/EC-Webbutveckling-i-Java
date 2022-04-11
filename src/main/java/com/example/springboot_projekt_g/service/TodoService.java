@@ -19,6 +19,11 @@ public class TodoService {
         return toDoRepository.findAll();
     }
 
+    // Lista av våra todos där vi hittar den kopplade todon till den knutna kontot genom användarnamnet.
+    public List<Todo> findByUsername(String username) {
+        return toDoRepository.findByAppUserUsername(username);
+    }
+
     public void removeById(int id) {
         toDoRepository.deleteById(id);
     }

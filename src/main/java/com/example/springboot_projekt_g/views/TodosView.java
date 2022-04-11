@@ -1,50 +1,61 @@
 package com.example.springboot_projekt_g.views;
 
 import com.example.springboot_projekt_g.components.TodoForm;
+import com.example.springboot_projekt_g.entities.AppUser;
 import com.example.springboot_projekt_g.entities.Todo;
+import com.example.springboot_projekt_g.repositories.TodoUserRepository;
+import com.example.springboot_projekt_g.security.LoggedInUser;
 import com.example.springboot_projekt_g.service.TodoService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
-import com.vaadin.flow.component.html.H2;
+import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.VaadinServletRequest;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-
 import javax.annotation.security.PermitAll;
 
 @PermitAll
-@Route("/")
+@Route("/todo")
 public class TodosView extends VerticalLayout {
 
     Grid<Todo> grid = new Grid<>(Todo.class, false);
     TodoService todoService;
     TodoForm todoForm;
+    TodoUserRepository todoUserRepository;
 
-
-    public TodosView(TodoService todoService) {
+    public TodosView(TodoService todoService, TodoUserRepository todoUserRepository) {
+        this.todoUserRepository = todoUserRepository;
         this.todoService = todoService;
         this.todoForm = new TodoForm(todoService,this);
-        setAlignItems(Alignment.CENTER);
-        add(new H2("Välkommen till din att-göra-lista"), new Hr());
 
-        grid.setItems(todoService.findAll());
+        HorizontalLayout headerContent = new HorizontalLayout();
+        H3 mainTitle = new H3("Att-Göra-Appen");
+        Button signOutButton = new Button("Logga ut", evt -> LoggedInUser.logout());
+
+        headerContent.setWidthFull();
+        headerContent.setJustifyContentMode(JustifyContentMode.BETWEEN);
+        headerContent.setAlignItems(Alignment.CENTER);
+
+        headerContent.add(mainTitle,signOutButton);
+        add(headerContent,new Hr());
+
+        // Sätter todosen som är bundna till den inloggade användaren i vårat grid.
+        grid.setItems(todoService.findByUsername(LoggedInUser.getLoggedInUserName()));
         grid.setWidthFull();
 
-        grid.addComponentColumn(blogPost -> {
+        grid.addComponentColumn(todo -> {
             Button deleteButton = new Button(new Icon(VaadinIcon.TRASH), evt -> {
 
-                todoService.removeById(blogPost.getId());
+                todoService.removeById(todo.getId());
                 updateItems();
 
             });
             deleteButton.addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_PRIMARY);
-
             return deleteButton;
         });
 
@@ -56,7 +67,14 @@ public class TodosView extends VerticalLayout {
         Button addButton = new Button("Ny uppgift", evt->{
             Dialog modal = new Dialog();
             TodoForm modalForm = new TodoForm(todoService, this);
-            modalForm.setTodo(new Todo());
+
+            // Tar den inloggande användaren genom findappusername och loggedinuser.getusername
+            Todo todo = new Todo();
+            AppUser currentUser = todoUserRepository.findAppUserByUsername(LoggedInUser.getLoggedInUserName()).orElseThrow();
+
+            todo.setAppUser(currentUser);
+            modalForm.setTodo(todo);
+
             modal.add(modalForm);
             modal.open();
         });
@@ -64,20 +82,14 @@ public class TodosView extends VerticalLayout {
 
         VerticalLayout mainContent = new VerticalLayout(grid, todoForm,new Hr());
         mainContent.setSizeFull();
-
-        Button signOutButton = new Button("Logga ut", evt -> logout());
-
-        add(mainContent,addButton, signOutButton);
-
+        add(mainContent,addButton);
 
     }
 
+    // Uppdaterar våra todos till den inloggade användaren.
     public void updateItems(){
-        grid.setItems(todoService.findAll());
+        grid.setItems(todoService.findByUsername(LoggedInUser.getLoggedInUserName()));
     }
 
-    public void logout(){
-        new SecurityContextLogoutHandler()
-                .logout(VaadinServletRequest.getCurrent().getHttpServletRequest(), null, null);
-    }
+
 }
