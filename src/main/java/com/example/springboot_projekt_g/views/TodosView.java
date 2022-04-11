@@ -3,6 +3,7 @@ package com.example.springboot_projekt_g.views;
 import com.example.springboot_projekt_g.components.TodoForm;
 import com.example.springboot_projekt_g.entities.AppUser;
 import com.example.springboot_projekt_g.entities.Todo;
+import com.example.springboot_projekt_g.repositories.TodoRepository;
 import com.example.springboot_projekt_g.repositories.TodoUserRepository;
 import com.example.springboot_projekt_g.security.LoggedInUser;
 import com.example.springboot_projekt_g.service.TodoService;
@@ -17,7 +18,10 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
+import org.springframework.beans.factory.annotation.Autowired;
+
 import javax.annotation.security.PermitAll;
+import java.util.Set;
 
 @PermitAll
 @Route("/todo")
@@ -27,11 +31,14 @@ public class TodosView extends VerticalLayout {
     TodoService todoService;
     TodoForm todoForm;
     TodoUserRepository todoUserRepository;
+    AppUser currentUser;
 
     public TodosView(TodoService todoService, TodoUserRepository todoUserRepository) {
         this.todoUserRepository = todoUserRepository;
         this.todoService = todoService;
         this.todoForm = new TodoForm(todoService,this);
+        this.currentUser = todoUserRepository.findAppUserByUsername(LoggedInUser.getLoggedInUserName()).orElseThrow();
+
 
         HorizontalLayout headerContent = new HorizontalLayout();
         H3 mainTitle = new H3("Att-Göra-Appen");
@@ -50,8 +57,8 @@ public class TodosView extends VerticalLayout {
 
         grid.addComponentColumn(todo -> {
             Button deleteButton = new Button(new Icon(VaadinIcon.TRASH), evt -> {
-
-                todoService.removeById(todo.getId());
+                currentUser.removeTodo(todo);
+                todoUserRepository.save(currentUser);
                 updateItems();
 
             });
@@ -70,13 +77,13 @@ public class TodosView extends VerticalLayout {
 
             // Tar den inloggande användaren genom findappusername och loggedinuser.getusername
             Todo todo = new Todo();
-            AppUser currentUser = todoUserRepository.findAppUserByUsername(LoggedInUser.getLoggedInUserName()).orElseThrow();
 
-            todo.addAppUser(currentUser);
+            currentUser.addTodo(todo);
             modalForm.setTodo(todo);
 
             modal.add(modalForm);
             modal.open();
+            todoUserRepository.save(currentUser);
         });
         addButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_LARGE);
 
@@ -88,8 +95,7 @@ public class TodosView extends VerticalLayout {
 
     // Uppdaterar våra todos till den inloggade användaren.
     public void updateItems(){
-        AppUser loggedInAppUser = todoUserRepository.findAppUserByUsername(LoggedInUser.getLoggedInUserName()).get();
-        grid.setItems(todoService.findByAppUser(loggedInAppUser));
+        grid.setItems(currentUser.getTodos());
     }
 
 

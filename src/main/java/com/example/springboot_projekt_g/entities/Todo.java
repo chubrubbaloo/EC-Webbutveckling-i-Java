@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "todos")
 public class Todo {
 
     @Id
@@ -24,7 +25,11 @@ public class Todo {
     @NotBlank
     private String priority;
 
-    @ManyToMany( mappedBy = "todos")
+    @ManyToMany(
+            mappedBy = "todos",
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL
+            )
     //@JoinColumn(name = "appuser_id") // Våran foreign key som referar till våran primary key i AppUser.
     private Set<AppUser> appUsers; // Referens till den appanvändaren som har skrivit todon.
 
@@ -48,7 +53,11 @@ public class Todo {
     }
 
     public void addAppUser(AppUser appUser){
-        this.appUsers.add(appUser);
+        appUser.addTodo(this);
+    }
+
+    public void removeAppUser(AppUser appUser) {
+        appUser.removeTodo(this);
     }
 
     public Set<AppUser> getAppUsers() {

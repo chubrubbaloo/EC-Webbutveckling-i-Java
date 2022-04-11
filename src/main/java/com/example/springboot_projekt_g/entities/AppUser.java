@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @Entity
+@Table(name = "appusers")
 public class AppUser {
 
     @Id
@@ -21,11 +22,15 @@ public class AppUser {
 
     // Om det skulle finnas en inkonsistens så markerar vi att denna sidan får ge sig, todon blir den ägande sidan.
     // Konverterat till ManyToMany
-    @ManyToMany
+    @ManyToMany(
+            fetch = FetchType.EAGER,
+            cascade = CascadeType.ALL
+    )
     @JoinTable(
-            name = "appuser_todo",
-            joinColumns = {@JoinColumn(name = "appuser_id")},
-            inverseJoinColumns = {@JoinColumn(name = "todo_id")})
+            name = "appusers_todos",
+            joinColumns = {@JoinColumn(name = "appusers_id")},
+            inverseJoinColumns = {@JoinColumn(name = "todos_id")}
+    )
     private Set<Todo> todos; // En kollektion av todos och en referens till alla todos som denna appusern har addat.
 
 
