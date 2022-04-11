@@ -29,14 +29,12 @@ public class TodosView extends VerticalLayout {
 
     Grid<Todo> grid = new Grid<>(Todo.class, false);
     TodoService todoService;
-    TodoForm todoForm;
     TodoUserRepository todoUserRepository;
-    AppUser currentUser;
+    public AppUser currentUser;
 
     public TodosView(TodoService todoService, TodoUserRepository todoUserRepository) {
         this.todoUserRepository = todoUserRepository;
         this.todoService = todoService;
-        this.todoForm = new TodoForm(todoService,this);
         this.currentUser = todoUserRepository.findAppUserByUsername(LoggedInUser.getLoggedInUserName()).orElseThrow();
 
 
@@ -51,44 +49,24 @@ public class TodosView extends VerticalLayout {
         headerContent.add(mainTitle,signOutButton);
         add(headerContent,new Hr());
 
-        // Sätter todosen som är bundna till den inloggade användaren i vårat grid.
         updateItems();
         grid.setWidthFull();
 
-        grid.addComponentColumn(todo -> {
-            Button deleteButton = new Button(new Icon(VaadinIcon.TRASH), evt -> {
-                currentUser.removeTodo(todo);
-                todoUserRepository.save(currentUser);
-                updateItems();
-
-            });
-            deleteButton.addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_PRIMARY);
-            return deleteButton;
-        });
-
+        grid.addComponentColumn(this::deleteButtonEvent);
         grid.addColumn(Todo::getCategory).setHeader("Kategori").setResizable(true);
         grid.addColumn(Todo::getTodo).setHeader("Att göra").setResizable(true);
         grid.addColumn(Todo::getPriority).setHeader("Prioritetsnivå").setSortable(true);
-        grid.asSingleSelect().addValueChangeListener(evt -> todoForm.setTodo(evt.getValue()));
 
         Button addButton = new Button("Ny uppgift", evt->{
-            Dialog modal = new Dialog();
-            TodoForm modalForm = new TodoForm(todoService, this);
-
-            // Tar den inloggande användaren genom findappusername och loggedinuser.getusername
-            Todo todo = new Todo();
-
-            currentUser.addTodo(todo);
-            modalForm.setTodo(todo);
-
-            modal.add(modalForm);
-            modal.open();
-            todoUserRepository.save(currentUser);
+            Dialog newTodoWindow = new Dialog();
+            newTodoWindow.add(new TodoForm(todoService, this, newTodoWindow));
+            newTodoWindow.open();
         });
         addButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_LARGE);
 
-        VerticalLayout mainContent = new VerticalLayout(grid, todoForm,new Hr());
+        VerticalLayout mainContent = new VerticalLayout(grid, new Hr());
         mainContent.setSizeFull();
+
         add(mainContent,addButton);
 
     }
@@ -98,5 +76,14 @@ public class TodosView extends VerticalLayout {
         grid.setItems(currentUser.getTodos());
     }
 
+    private Button deleteButtonEvent(Todo todo){
+        Button deleteButton = new Button(new Icon(VaadinIcon.TRASH), evt -> {
+            currentUser.removeTodo(todo);
+            todoUserRepository.save(currentUser);
+            updateItems();
 
+        });
+        deleteButton.addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_PRIMARY);
+        return deleteButton;
+    }
 }
