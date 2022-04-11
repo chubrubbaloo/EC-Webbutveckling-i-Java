@@ -1,5 +1,6 @@
 package com.example.springboot_projekt_g.service;
 
+import com.example.springboot_projekt_g.entities.AppUser;
 import com.example.springboot_projekt_g.entities.Todo;
 import com.example.springboot_projekt_g.repositories.TodoRepository;
 import org.springframework.stereotype.Service;
@@ -20,8 +21,8 @@ public class TodoService {
     }
 
     // Lista av våra todos där vi hittar den kopplade todon till den knutna kontot genom användarnamnet.
-    public List<Todo> findByUsername(String username) {
-        return toDoRepository.findByAppUserUsername(username);
+    public List<Todo> findByAppUser(AppUser appUser) {
+        return toDoRepository.findByAppUsers(appUser);
     }
 
     public void removeById(int id) {

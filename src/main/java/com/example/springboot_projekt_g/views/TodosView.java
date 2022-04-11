@@ -45,7 +45,7 @@ public class TodosView extends VerticalLayout {
         add(headerContent,new Hr());
 
         // Sätter todosen som är bundna till den inloggade användaren i vårat grid.
-        grid.setItems(todoService.findByUsername(LoggedInUser.getLoggedInUserName()));
+        updateItems();
         grid.setWidthFull();
 
         grid.addComponentColumn(todo -> {
@@ -72,7 +72,7 @@ public class TodosView extends VerticalLayout {
             Todo todo = new Todo();
             AppUser currentUser = todoUserRepository.findAppUserByUsername(LoggedInUser.getLoggedInUserName()).orElseThrow();
 
-            todo.setAppUser(currentUser);
+            todo.addAppUser(currentUser);
             modalForm.setTodo(todo);
 
             modal.add(modalForm);
@@ -88,7 +88,8 @@ public class TodosView extends VerticalLayout {
 
     // Uppdaterar våra todos till den inloggade användaren.
     public void updateItems(){
-        grid.setItems(todoService.findByUsername(LoggedInUser.getLoggedInUserName()));
+        AppUser loggedInAppUser = todoUserRepository.findAppUserByUsername(LoggedInUser.getLoggedInUserName()).get();
+        grid.setItems(todoService.findByAppUser(loggedInAppUser));
     }
 
 

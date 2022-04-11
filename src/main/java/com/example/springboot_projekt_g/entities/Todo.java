@@ -2,6 +2,8 @@ package com.example.springboot_projekt_g.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import java.util.HashSet;
+import java.util.Set;
 
 @Entity
 public class Todo {
@@ -22,15 +24,15 @@ public class Todo {
     @NotBlank
     private String priority;
 
-    @ManyToOne
-    @JoinColumn(name = "appuser_id") // Våran foreign key som referar till våran primary key i AppUser.
-    private AppUser appUser; // Referens till den appanvändaren som har skrivit todon.
+    @ManyToMany( mappedBy = "todos")
+    //@JoinColumn(name = "appuser_id") // Våran foreign key som referar till våran primary key i AppUser.
+    private Set<AppUser> appUsers; // Referens till den appanvändaren som har skrivit todon.
 
 
-    public Todo(String category, String todo, AppUser appUser, String priority) {
+    public Todo(String category, String todo, String priority) {
         this.category = category;
         this.todo = todo;
-        this.appUser = appUser;
+        this.appUsers = new HashSet<>();
         this.priority = priority;
     }
 
@@ -45,12 +47,16 @@ public class Todo {
         this.priority = priority;
     }
 
-    public AppUser getAppUser() {
-        return appUser;
+    public void addAppUser(AppUser appUser){
+        this.appUsers.add(appUser);
     }
 
-    public void setAppUser(AppUser appUser) {
-        this.appUser = appUser;
+    public Set<AppUser> getAppUsers() {
+        return appUsers;
+    }
+
+    public void setAppUser(Set<AppUser> appUsers) {
+        this.appUsers = appUsers;
     }
 
     public void setId(int id) {

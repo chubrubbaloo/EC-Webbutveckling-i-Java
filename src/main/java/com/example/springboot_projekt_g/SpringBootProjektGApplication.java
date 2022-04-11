@@ -30,12 +30,16 @@ public class SpringBootProjektGApplication {
 
             AppUser haris = new AppUser("Haris", passwordEncoder.encode("pass")); // Krypterar vårat lösen i vår DB så det inte står i klartext.
             AppUser karl = new AppUser("Karl", passwordEncoder.encode("pass"));
-            todoUserRepository.saveAll(List.of(haris,karl));
 
-            Todo toDo = new Todo("Studier", "Bygg klart CRUD-projektet.",haris,"Hög");
-            Todo secondTodo = new Todo("Mitt livsverk","Bygg klart AI-algoritmen för att ta över världen.",karl,"Hög");
-            Todo thirdTodo = new Todo("Hälsa","Få in en timmas träning för dagen.",haris,"Låg");
+            Todo toDo = new Todo("Studier", "Bygg klart CRUD-projektet.", "Hög");
+            Todo secondTodo = new Todo("Mitt livsverk","Bygg klart AI-algoritmen för att ta över världen.","Hög");
+            Todo thirdTodo = new Todo("Hälsa","Få in en timmas träning för dagen.","Låg");
+            haris.addTodo(toDo);
+            haris.addTodo(thirdTodo);
+            karl.addTodo(secondTodo);
+
             todoRepository.saveAll(List.of(toDo,secondTodo,thirdTodo));
+            todoUserRepository.saveAll(List.of(haris,karl));
         };
     }
 
