@@ -3,7 +3,6 @@ package com.example.springboot_projekt_g.views;
 import com.example.springboot_projekt_g.components.TodoForm;
 import com.example.springboot_projekt_g.entities.AppUser;
 import com.example.springboot_projekt_g.entities.Todo;
-import com.example.springboot_projekt_g.repositories.TodoRepository;
 import com.example.springboot_projekt_g.repositories.TodoUserRepository;
 import com.example.springboot_projekt_g.security.LoggedInUser;
 import com.example.springboot_projekt_g.service.TodoService;
@@ -18,24 +17,30 @@ import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.security.PermitAll;
-import java.util.Set;
 
 @PermitAll
 @Route("/todo")
 public class TodosView extends VerticalLayout {
 
-    Grid<Todo> grid = new Grid<>(Todo.class, false);
     TodoService todoService;
-    TodoUserRepository todoUserRepository;
+    public TodoUserRepository todoUserRepository;
+
     public AppUser currentUser;
+    Grid<Todo> grid = new Grid<>(Todo.class, false);
+
+    //available windows:
+    TodoForm todoForm;
 
     public TodosView(TodoService todoService, TodoUserRepository todoUserRepository) {
         this.todoUserRepository = todoUserRepository;
         this.todoService = todoService;
         this.currentUser = todoUserRepository.findAppUserByUsername(LoggedInUser.getLoggedInUserName()).orElseThrow();
+
+        Dialog newTodoWindow = new Dialog();
+        todoForm = new TodoForm(todoService, this, newTodoWindow);
+        newTodoWindow.add(todoForm);
 
 
         HorizontalLayout headerContent = new HorizontalLayout();
@@ -52,17 +57,13 @@ public class TodosView extends VerticalLayout {
         updateItems();
         grid.setWidthFull();
 
-        grid.addComponentColumn(this::deleteButtonEvent);
-        grid.addColumn(Todo::getCategory).setHeader("Kategori").setResizable(true);
-        grid.addColumn(Todo::getTodo).setHeader("Att göra").setResizable(true);
-        grid.addColumn(Todo::getPriority).setHeader("Prioritetsnivå").setSortable(true);
+        grid.addComponentColumn(this::deleteButton).setWidth("90px").setHeader("Del").setResizable(true).setFlexGrow(0);
+        grid.addComponentColumn(this::editButton).setWidth("90px").setHeader("Edit").setResizable(true).setFlexGrow(0);
+        grid.addColumn(Todo::getCategory).setWidth("150px").setHeader("Kategori").setResizable(true).setFlexGrow(0);
+        grid.addColumn(Todo::getTodo).setHeader("Att göra").setResizable(true).setFlexGrow(3);
+        grid.addColumn(Todo::getPriority).setHeader("Prioritetsnivå").setSortable(true).setWidth("150px").setFlexGrow(0);
 
-        Button addButton = new Button("Ny uppgift", evt->{
-            Dialog newTodoWindow = new Dialog();
-            newTodoWindow.add(new TodoForm(todoService, this, newTodoWindow));
-            newTodoWindow.open();
-        });
-        addButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_LARGE);
+        Button addButton = addButton();
 
         VerticalLayout mainContent = new VerticalLayout(grid, new Hr());
         mainContent.setSizeFull();
@@ -73,17 +74,38 @@ public class TodosView extends VerticalLayout {
 
     // Uppdaterar våra todos till den inloggade användaren.
     public void updateItems(){
+        currentUser = todoUserRepository.findAppUserByUsername(LoggedInUser.getLoggedInUserName()).orElseThrow();
         grid.setItems(currentUser.getTodos());
     }
 
-    private Button deleteButtonEvent(Todo todo){
+    private Button deleteButton(Todo todo){
         Button deleteButton = new Button(new Icon(VaadinIcon.TRASH), evt -> {
             currentUser.removeTodo(todo);
             todoUserRepository.save(currentUser);
             updateItems();
-
         });
+
         deleteButton.addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_PRIMARY);
         return deleteButton;
+    }
+
+    private Button editButton(Todo todo){
+        Button deleteButton = new Button(new Icon(VaadinIcon.PENCIL), evt -> {
+            todoForm.setTodo(todo);
+            todoForm.open();
+        });
+
+        deleteButton.addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_PRIMARY);
+        return deleteButton;
+    }
+
+    private Button addButton(){
+        Button addButton = new Button("Ny uppgift", evt -> {
+            todoForm.setTodo(new Todo());
+            todoForm.open();
+        });
+
+        addButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY,ButtonVariant.LUMO_LARGE);
+        return addButton;
     }
 }

@@ -56,10 +56,26 @@ public class TodoForm extends FormLayout {
         // validerar Todon. throwar exception ifall valideringen misslyckas.
         Todo todo = binder.validate().getBinder().getBean();
 
-        // Sparar Todon och uppdaterar relavanta fält.
-        todoService.save(todo);
+        // Sparar Todon och uppdaterar relevanta fält.
         todosView.currentUser.addTodo(todo);
+        todoService.save(todo);
+        todosView.todoUserRepository.save(todosView.currentUser);
         todosView.updateItems();
+
+        //resets window
+        binder.setBean(new Todo());
+        close();
+    }
+
+    public void open(){
+        parentWindow.open();
+    }
+
+    public void close(){
         parentWindow.close();
+    }
+
+    public void setTodo(Todo todo){
+        binder.setBean(todo);
     }
 }
