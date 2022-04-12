@@ -15,6 +15,9 @@ public class Todo {
     private int id;
 
     @Column
+    public boolean done;
+
+    @Column
     @NotBlank
     private String category;
 
@@ -40,9 +43,18 @@ public class Todo {
         this.todo = todo;
         this.appUsers = new HashSet<>();
         this.priority = priority;
+        this.done = false;
     }
 
     public Todo() {
+    }
+
+    public boolean isDone() {
+        return done;
+    }
+
+    public void setDone(boolean done) {
+        this.done = done;
     }
 
     public String getPriority() {
