@@ -58,7 +58,7 @@ public class HistoryView extends VerticalLayout {
             updateItems();
         });
         return checkbox;
-    });
+    }).setWidth("90px").setHeader("Done").setResizable(true).setFlexGrow(0);
 
         grid.addComponentColumn(this::deleteButtonEvent);
         grid.addColumn(Todo::getCategory).setHeader("Kategori").setResizable(true);

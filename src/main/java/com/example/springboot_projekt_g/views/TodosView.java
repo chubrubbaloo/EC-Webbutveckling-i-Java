@@ -68,7 +68,7 @@ public class TodosView extends VerticalLayout {
                 updateItems();
             });
             return checkbox;
-        });
+        }).setWidth("90px").setHeader("Done").setResizable(true).setFlexGrow(0);
 
         grid.addComponentColumn(this::deleteButton).setWidth("90px").setHeader("Del").setResizable(true).setFlexGrow(0);
         grid.addComponentColumn(this::editButton).setWidth("90px").setHeader("Edit").setResizable(true).setFlexGrow(0);
