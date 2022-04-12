@@ -22,7 +22,7 @@ import com.vaadin.flow.router.Route;
 import javax.annotation.security.PermitAll;
 
 @PermitAll
-@Route("/todo")
+@Route(value = "/todo", layout = AppView.class)
 public class TodosView extends VerticalLayout {
 
     TodoService todoService;
@@ -46,14 +46,13 @@ public class TodosView extends VerticalLayout {
 
         HorizontalLayout headerContent = new HorizontalLayout();
         H3 mainTitle = new H3("Att-Göra-Appen");
-        Button signOutButton = new Button("Logga ut", evt -> LoggedInUser.logout());
 
         headerContent.setWidthFull();
         headerContent.setJustifyContentMode(JustifyContentMode.BETWEEN);
         headerContent.setAlignItems(Alignment.CENTER);
 
-        headerContent.add(mainTitle,signOutButton);
-        add(headerContent,new Hr());
+        headerContent.add(mainTitle);
+        add(headerContent);
 
         updateItems();
         grid.setWidthFull();

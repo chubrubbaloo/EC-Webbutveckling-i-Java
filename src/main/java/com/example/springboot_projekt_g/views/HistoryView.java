@@ -22,7 +22,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 import javax.annotation.security.PermitAll;
 
 @PermitAll
-@Route(value = "/managehistory")
+@Route(value = "/managehistory", layout = AppView.class)
 public class HistoryView extends VerticalLayout {
 
     Grid<Todo> grid = new Grid<>(Todo.class, false);
@@ -37,15 +37,14 @@ public class HistoryView extends VerticalLayout {
 
 
     HorizontalLayout headerContent = new HorizontalLayout();
-    H3 mainTitle = new H3("Att-Göra-Appen");
-    Button signOutButton = new Button("Logga ut", evt -> LoggedInUser.logout());
+    H3 mainTitle = new H3("History");
 
         headerContent.setWidthFull();
         headerContent.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
         headerContent.setAlignItems(FlexComponent.Alignment.CENTER);
 
-        headerContent.add(mainTitle,signOutButton);
-    add(headerContent,new Hr());
+        headerContent.add(mainTitle);
+        add(headerContent);
 
     updateItems();
         grid.setWidthFull();
