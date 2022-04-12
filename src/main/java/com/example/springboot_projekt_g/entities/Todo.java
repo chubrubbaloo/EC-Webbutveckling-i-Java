@@ -2,7 +2,7 @@ package com.example.springboot_projekt_g.entities;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -16,6 +16,9 @@ public class Todo {
 
     @Column
     public boolean done;
+
+    @Column
+    private Date timeStamp;
 
     @Column
     @NotBlank
@@ -44,9 +47,18 @@ public class Todo {
         this.appUsers = new HashSet<>();
         this.priority = priority;
         this.done = false;
+        this.timeStamp = new Date();
     }
 
     public Todo() {
+    }
+
+    public Date getTimeStamp() {
+        return timeStamp;
+    }
+
+    public void setTimeStamp(Date timeStamp) {
+        this.timeStamp = timeStamp;
     }
 
     public boolean isDone() {

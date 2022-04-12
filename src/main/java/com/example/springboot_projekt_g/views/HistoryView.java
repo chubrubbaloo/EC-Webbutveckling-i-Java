@@ -10,20 +10,21 @@ import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H3;
-import com.vaadin.flow.component.html.Hr;
 import com.vaadin.flow.component.icon.Icon;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.orderedlayout.FlexComponent;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
-import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 import javax.annotation.security.PermitAll;
+import java.util.Date;
+
 
 @PermitAll
 @Route(value = "/managehistory", layout = AppView.class)
 public class HistoryView extends VerticalLayout {
+
+    //private Date timeStamp;
 
     Grid<Todo> grid = new Grid<>(Todo.class, false);
     TodoService todoService;
@@ -34,7 +35,7 @@ public class HistoryView extends VerticalLayout {
         this.todoUserRepository = todoUserRepository;
         this.todoService = todoService;
         this.currentUser = todoUserRepository.findAppUserByUsername(LoggedInUser.getLoggedInUserName()).orElseThrow();
-
+        //this.timeStamp = new Date();
 
     HorizontalLayout headerContent = new HorizontalLayout();
     H3 mainTitle = new H3("History");
@@ -51,13 +52,16 @@ public class HistoryView extends VerticalLayout {
         checkbox.setValue(todo.isDone());
         checkbox.addValueChangeListener(event -> {
             todo.setDone(event.getValue());
+            todo.setTimeStamp(new Date());
+
             todoService.save(todo);
             updateItems();
         });
         return checkbox;
-    }).setWidth("90px").setHeader("Done").setResizable(true).setFlexGrow(0);
+    }).setWidth("90px").setHeader("Check").setResizable(true).setFlexGrow(0);
 
         grid.addComponentColumn(this::deleteButtonEvent);
+        grid.addColumn(Todo::getTimeStamp).setHeader("Utförd").setResizable(true);
         grid.addColumn(Todo::getCategory).setHeader("Kategori").setResizable(true);
         grid.addColumn(Todo::getTodo).setHeader("Att göra").setResizable(true);
         grid.addColumn(Todo::getPriority).setHeader("Prioritetsnivå").setSortable(true);
