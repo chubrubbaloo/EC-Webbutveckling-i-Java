@@ -1,6 +1,5 @@
 package com.example.springboot_projekt_g.views;
 
-import com.example.springboot_projekt_g.components.TodoForm;
 import com.example.springboot_projekt_g.entities.AppUser;
 import com.example.springboot_projekt_g.entities.Todo;
 import com.example.springboot_projekt_g.repositories.TodoUserRepository;
@@ -9,7 +8,6 @@ import com.example.springboot_projekt_g.service.TodoService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.Checkbox;
-import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.H3;
 import com.vaadin.flow.component.html.Hr;
@@ -31,7 +29,6 @@ public class HistoryView extends VerticalLayout {
     public AppUser currentUser;
 
     public HistoryView(TodoService todoService, TodoUserRepository todoUserRepository) {
-    //public HistoryView(TodoService todoService) {
         this.todoUserRepository = todoUserRepository;
         this.todoService = todoService;
         this.currentUser = todoUserRepository.findAppUserByUsername(LoggedInUser.getLoggedInUserName()).orElseThrow();
@@ -77,7 +74,6 @@ public class HistoryView extends VerticalLayout {
 
     // Uppdaterar våra todos till den inloggade användaren.
     public void updateItems(){
-        //grid.setItems(currentUser.getTodos());
         // Ändrad av Filip 2022-04-12
         grid.setItems(currentUser.getTodos()
                 .stream()
@@ -88,7 +84,6 @@ public class HistoryView extends VerticalLayout {
     private Button deleteButtonEvent(Todo todo){
         Button deleteButton = new Button(new Icon(VaadinIcon.TRASH), evt -> {
             currentUser.removeTodo(todo);
-            //todoUserRepository.save(currentUser);
             updateItems();
 
         });
