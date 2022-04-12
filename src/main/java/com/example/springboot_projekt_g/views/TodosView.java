@@ -47,10 +47,6 @@ public class TodosView extends VerticalLayout {
         HorizontalLayout headerContent = new HorizontalLayout();
         H3 mainTitle = new H3("Att-Göra-Appen");
 
-        headerContent.setWidthFull();
-        headerContent.setJustifyContentMode(JustifyContentMode.BETWEEN);
-        headerContent.setAlignItems(Alignment.CENTER);
-
         headerContent.add(mainTitle);
         add(headerContent);
 

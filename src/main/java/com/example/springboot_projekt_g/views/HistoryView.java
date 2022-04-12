@@ -39,10 +39,6 @@ public class HistoryView extends VerticalLayout {
     HorizontalLayout headerContent = new HorizontalLayout();
     H3 mainTitle = new H3("History");
 
-        headerContent.setWidthFull();
-        headerContent.setJustifyContentMode(FlexComponent.JustifyContentMode.BETWEEN);
-        headerContent.setAlignItems(FlexComponent.Alignment.CENTER);
-
         headerContent.add(mainTitle);
         add(headerContent);
 
