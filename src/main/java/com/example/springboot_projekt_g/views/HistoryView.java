@@ -19,7 +19,9 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.server.auth.AnonymousAllowed;
 
-@AnonymousAllowed
+import javax.annotation.security.PermitAll;
+
+@PermitAll
 @Route(value = "/managehistory")
 public class HistoryView extends VerticalLayout {
 
