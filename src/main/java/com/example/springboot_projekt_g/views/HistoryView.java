@@ -47,6 +47,7 @@ public class HistoryView extends VerticalLayout {
         grid.setWidthFull();
 
         // Filip lägger till historik-checkbox (med hjälp av Haris & Viktor) 2022-04-12
+        // Todo flyttas till todo när checkbox checkats ur.
         grid.addComponentColumn(todo -> {
             Checkbox checkbox = new Checkbox();
             checkbox.setValue(todo.isDone());
@@ -72,6 +73,7 @@ public class HistoryView extends VerticalLayout {
     }
 
     // Uppdaterar våra todos till den inloggade användaren.
+    // Checkade todos visas
     public void updateItems() {
         grid.setItems(currentUser.getTodos()
                 .stream()

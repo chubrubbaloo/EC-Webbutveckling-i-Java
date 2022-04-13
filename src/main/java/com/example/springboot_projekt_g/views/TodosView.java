@@ -60,6 +60,7 @@ public class TodosView extends VerticalLayout {
         grid.setWidthFull();
 
         // Filip lägger till checkbox-funktionalitet (med hjälp av Haris & Viktor) 2022-04-12
+        // Todo flyttas till historik när checkbox checkats i.
         grid.addComponentColumn(todo -> {
             Checkbox checkbox = new Checkbox();
             checkbox.setValue(todo.isDone());
@@ -88,6 +89,7 @@ public class TodosView extends VerticalLayout {
     }
 
     // Uppdaterar våra todos till den inloggade användaren.
+    // Ej checkade todos visas
     public void updateItems(){
         currentUser = todoUserRepository.findAppUserByUsername(LoggedInUser.getLoggedInUserName()).orElseThrow();
         grid.setItems(currentUser.getTodos()
