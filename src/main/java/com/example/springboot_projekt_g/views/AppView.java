@@ -14,7 +14,7 @@ import com.vaadin.flow.server.auth.AnonymousAllowed;
 
 import javax.annotation.security.PermitAll;
 
-// Filip lägger till AppView för menyer och login-knapp
+// Filip lägger till AppView för meny-översikt och plats för login-knapp
 @PermitAll
 public class AppView extends AppLayout {
 

@@ -17,15 +17,11 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
 import javax.annotation.security.PermitAll;
-import java.util.Date;
 
 
 @PermitAll
 @Route(value = "/managehistory", layout = AppView.class)
 public class HistoryView extends VerticalLayout {
-
-    //private Date timeStamp;
-
     Grid<Todo> grid = new Grid<>(Todo.class, false);
     TodoService todoService;
     TodoUserRepository todoUserRepository;
@@ -35,7 +31,6 @@ public class HistoryView extends VerticalLayout {
         this.todoUserRepository = todoUserRepository;
         this.todoService = todoService;
         this.currentUser = todoUserRepository.findAppUserByUsername(LoggedInUser.getLoggedInUserName()).orElseThrow();
-        //this.timeStamp = new Date();
 
         HorizontalLayout headerContent = new HorizontalLayout();
         headerContent.setWidthFull();
@@ -51,13 +46,12 @@ public class HistoryView extends VerticalLayout {
         updateItems();
         grid.setWidthFull();
 
-        // Filip lägger till  (med hjälp av Haris & Viktor) 2022-04-12
+        // Filip lägger till historik-checkbox (med hjälp av Haris & Viktor) 2022-04-12
         grid.addComponentColumn(todo -> {
             Checkbox checkbox = new Checkbox();
             checkbox.setValue(todo.isDone());
             checkbox.addValueChangeListener(event -> {
                 todo.setDone(event.getValue());
-
                 todoService.save(todo);
                 updateItems();
             });
@@ -79,13 +73,13 @@ public class HistoryView extends VerticalLayout {
 
     // Uppdaterar våra todos till den inloggade användaren.
     public void updateItems() {
-        // Ändrad av Filip 2022-04-12
         grid.setItems(currentUser.getTodos()
                 .stream()
                 .filter(Todo::isDone)
                 .toList());
     }
 
+    // Tar bort todos
     private Button deleteButtonEvent(Todo todo) {
         Button deleteButton = new Button(new Icon(VaadinIcon.TRASH), evt -> {
             currentUser.removeTodo(todo);

@@ -59,7 +59,7 @@ public class TodosView extends VerticalLayout {
         updateItems();
         grid.setWidthFull();
 
-        // Filip lägger till  (med hjälp av Haris & Viktor) 2022-04-12
+        // Filip lägger till checkbox-funktionalitet (med hjälp av Haris & Viktor) 2022-04-12
         grid.addComponentColumn(todo -> {
             Checkbox checkbox = new Checkbox();
             checkbox.setValue(todo.isDone());
