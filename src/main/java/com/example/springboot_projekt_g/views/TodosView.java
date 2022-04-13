@@ -45,9 +45,14 @@ public class TodosView extends VerticalLayout {
 
 
         HorizontalLayout headerContent = new HorizontalLayout();
-        H3 mainTitle = new H3("Att-Göra-Appen");
+        headerContent.setWidthFull();
+        headerContent.setJustifyContentMode(JustifyContentMode.BETWEEN);
+        H3 todoTitle = new H3("Min lista");
+        H3 loggedInAs = new H3("Inloggad som " + currentUser.getUsername());
+        todoTitle.getStyle().set("margin-left","20px");
+        loggedInAs.getStyle().set("margin-right","20px");
 
-        headerContent.add(mainTitle);
+        headerContent.add(todoTitle,loggedInAs);
         add(headerContent);
 
         updateItems();
@@ -65,8 +70,8 @@ public class TodosView extends VerticalLayout {
             return checkbox;
         }).setWidth("90px").setHeader("Check").setResizable(true).setFlexGrow(0);
 
-        grid.addComponentColumn(this::deleteButton).setWidth("90px").setHeader("Del").setResizable(true).setFlexGrow(0);
-        grid.addComponentColumn(this::editButton).setWidth("90px").setHeader("Edit").setResizable(true).setFlexGrow(0);
+        grid.addComponentColumn(this::deleteButton).setWidth("90px").setHeader("Radera").setResizable(true).setFlexGrow(0);
+        grid.addComponentColumn(this::editButton).setWidth("90px").setHeader("Redigera").setResizable(true).setFlexGrow(0);
         grid.addColumn(Todo::getCategory).setWidth("150px").setHeader("Kategori").setResizable(true).setFlexGrow(0);
         grid.addColumn(Todo::getTodo).setHeader("Att göra").setResizable(true).setFlexGrow(3);
         grid.addColumn(Todo::getPriority).setHeader("Prioritetsnivå").setSortable(true).setWidth("150px").setFlexGrow(0);
@@ -101,13 +106,13 @@ public class TodosView extends VerticalLayout {
     }
 
     private Button editButton(Todo todo){
-        Button deleteButton = new Button(new Icon(VaadinIcon.PENCIL), evt -> {
+        Button editButton = new Button(new Icon(VaadinIcon.PENCIL), evt -> {
             todoForm.setTodo(todo);
             todoForm.open();
         });
 
-        deleteButton.addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_PRIMARY);
-        return deleteButton;
+        editButton.addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_PRIMARY);
+        return editButton;
     }
 
     private Button addButton(){

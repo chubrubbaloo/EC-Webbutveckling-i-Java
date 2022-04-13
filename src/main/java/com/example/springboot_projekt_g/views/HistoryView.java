@@ -37,28 +37,33 @@ public class HistoryView extends VerticalLayout {
         this.currentUser = todoUserRepository.findAppUserByUsername(LoggedInUser.getLoggedInUserName()).orElseThrow();
         //this.timeStamp = new Date();
 
-    HorizontalLayout headerContent = new HorizontalLayout();
-    H3 mainTitle = new H3("History");
+        HorizontalLayout headerContent = new HorizontalLayout();
+        headerContent.setWidthFull();
+        headerContent.setJustifyContentMode(JustifyContentMode.BETWEEN);
+        H3 historyTitle = new H3("Min historik");
+        H3 loggedInAs = new H3("Inloggad som " + currentUser.getUsername());
+        historyTitle.getStyle().set("margin-left","20px");
+        loggedInAs.getStyle().set("margin-right","20px");
 
-        headerContent.add(mainTitle);
+        headerContent.add(historyTitle,loggedInAs);
         add(headerContent);
 
-    updateItems();
+        updateItems();
         grid.setWidthFull();
 
-    // Filip lägger till  (med hjälp av Haris & Viktor) 2022-04-12
+        // Filip lägger till  (med hjälp av Haris & Viktor) 2022-04-12
         grid.addComponentColumn(todo -> {
-        Checkbox checkbox = new Checkbox();
-        checkbox.setValue(todo.isDone());
-        checkbox.addValueChangeListener(event -> {
-            todo.setDone(event.getValue());
-            todo.setTimeStamp(new Date());
+            Checkbox checkbox = new Checkbox();
+            checkbox.setValue(todo.isDone());
+            checkbox.addValueChangeListener(event -> {
+                todo.setDone(event.getValue());
+                todo.setTimeStamp(new Date());
 
-            todoService.save(todo);
-            updateItems();
-        });
-        return checkbox;
-    }).setWidth("90px").setHeader("Check").setResizable(true).setFlexGrow(0);
+                todoService.save(todo);
+                updateItems();
+            });
+            return checkbox;
+        }).setWidth("90px").setHeader("Check").setResizable(true).setFlexGrow(0);
 
         grid.addComponentColumn(this::deleteButtonEvent);
         grid.addColumn(Todo::getTimeStamp).setHeader("Utförd").setResizable(true);
@@ -66,15 +71,15 @@ public class HistoryView extends VerticalLayout {
         grid.addColumn(Todo::getTodo).setHeader("Att göra").setResizable(true);
         grid.addColumn(Todo::getPriority).setHeader("Prioritetsnivå").setSortable(true);
 
-    VerticalLayout mainContent = new VerticalLayout(grid);
+        VerticalLayout mainContent = new VerticalLayout(grid);
         mainContent.setSizeFull();
 
-    add(mainContent);
+        add(mainContent);
 
-}
+    }
 
     // Uppdaterar våra todos till den inloggade användaren.
-    public void updateItems(){
+    public void updateItems() {
         // Ändrad av Filip 2022-04-12
         grid.setItems(currentUser.getTodos()
                 .stream()
@@ -82,7 +87,7 @@ public class HistoryView extends VerticalLayout {
                 .toList());
     }
 
-    private Button deleteButtonEvent(Todo todo){
+    private Button deleteButtonEvent(Todo todo) {
         Button deleteButton = new Button(new Icon(VaadinIcon.TRASH), evt -> {
             currentUser.removeTodo(todo);
             updateItems();

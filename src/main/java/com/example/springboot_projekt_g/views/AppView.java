@@ -23,7 +23,7 @@ public class AppView extends AppLayout {
         HorizontalLayout navbarLayout = new HorizontalLayout();
         Button signOutButton = new Button("Logga ut", evt -> LoggedInUser.logout());
 
-        H1 mainTitle = new H1("Todo Application");
+        H1 mainTitle = new H1("Att-Göra-Appen");
         mainTitle.getStyle().set("padding-bottom", "20px");
 
         navbarLayout.add(
@@ -38,8 +38,8 @@ public class AppView extends AppLayout {
 
         navbarLayout.setAlignItems(FlexComponent.Alignment.CENTER);
 
-        RouterLink TodosViewLink = new RouterLink("View Todos", TodosView.class);
-        RouterLink historyViewLink = new RouterLink("View History", HistoryView.class);
+        RouterLink TodosViewLink = new RouterLink("Se lista", TodosView.class);
+        RouterLink historyViewLink = new RouterLink("Se historik", HistoryView.class);
 
         addToDrawer(new VerticalLayout(TodosViewLink, historyViewLink));
 
