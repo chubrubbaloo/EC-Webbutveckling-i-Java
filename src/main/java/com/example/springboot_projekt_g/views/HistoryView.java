@@ -57,7 +57,6 @@ public class HistoryView extends VerticalLayout {
             checkbox.setValue(todo.isDone());
             checkbox.addValueChangeListener(event -> {
                 todo.setDone(event.getValue());
-                todo.setTimeStamp(new Date());
 
                 todoService.save(todo);
                 updateItems();
@@ -66,7 +65,7 @@ public class HistoryView extends VerticalLayout {
         }).setWidth("90px").setHeader("Check").setResizable(true).setFlexGrow(0);
 
         grid.addComponentColumn(this::deleteButtonEvent);
-        grid.addColumn(Todo::getTimeStamp).setHeader("Utförd").setResizable(true);
+        grid.addColumn(Todo::getTimeStampClean).setHeader("Utförd").setResizable(true);
         grid.addColumn(Todo::getCategory).setHeader("Kategori").setResizable(true);
         grid.addColumn(Todo::getTodo).setHeader("Att göra").setResizable(true);
         grid.addColumn(Todo::getPriority).setHeader("Prioritetsnivå").setSortable(true);
@@ -90,6 +89,7 @@ public class HistoryView extends VerticalLayout {
     private Button deleteButtonEvent(Todo todo) {
         Button deleteButton = new Button(new Icon(VaadinIcon.TRASH), evt -> {
             currentUser.removeTodo(todo);
+            todoUserRepository.save(currentUser);
             updateItems();
 
         });

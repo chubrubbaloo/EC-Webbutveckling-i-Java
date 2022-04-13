@@ -53,6 +53,10 @@ public class Todo {
     public Todo() {
     }
 
+    public String getTimeStampClean() {
+        return timeStamp.toString().substring(0,16);
+    }
+
     public Date getTimeStamp() {
         return timeStamp;
     }

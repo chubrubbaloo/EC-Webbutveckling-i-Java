@@ -20,6 +20,7 @@ import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.router.Route;
 
 import javax.annotation.security.PermitAll;
+import java.util.Date;
 
 @PermitAll
 @Route(value = "/todo", layout = AppView.class)
@@ -64,6 +65,7 @@ public class TodosView extends VerticalLayout {
             checkbox.setValue(todo.isDone());
             checkbox.addValueChangeListener(event -> {
                 todo.setDone(event.getValue());
+                todo.setTimeStamp(new Date());
                 todoService.save(todo);
                 updateItems();
             });
