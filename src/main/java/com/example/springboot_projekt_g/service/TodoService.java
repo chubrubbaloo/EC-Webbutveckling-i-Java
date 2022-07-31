@@ -1,7 +1,9 @@
 package com.example.springboot_projekt_g.service;
 
+import com.example.springboot_projekt_g.entities.AppUser;
 import com.example.springboot_projekt_g.entities.Todo;
 import com.example.springboot_projekt_g.repositories.TodoRepository;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,11 +14,17 @@ public class TodoService {
     TodoRepository toDoRepository;
 
     public TodoService(TodoRepository todoRepository) {
+
         this.toDoRepository = todoRepository;
     }
 
     public List<Todo> findAll() {
         return toDoRepository.findAll();
+    }
+
+    // Lista av våra todos där vi hittar den kopplade todon till den knutna kontot genom användarnamnet.
+    public List<Todo> findByAppUser(AppUser appUser) {
+        return toDoRepository.findByAppUsers(appUser);
     }
 
     public void removeById(int id) {
@@ -35,6 +43,8 @@ public class TodoService {
             existingTodo.setCategory(changedTodo.getCategory());
         if(changedTodo.getTodo() != null)
             existingTodo.setTodo(changedTodo.getTodo());
+        if (changedTodo.getPriority()!=null)
+            existingTodo.setPriority(changedTodo.getPriority());
 
         toDoRepository.save(existingTodo);
 
