@@ -1,4 +1,6 @@
-<h1>Översikt</h1>
+<h1>Projektuppgift - Webbutveckling i Java</h1>
+
+<h2>Översikt</h2>
 Det här är den obligatoriska projektuppgift som hör till kursen Webbutveckling i Java. Uppgiften är
 indelad i två delar – en g-uppgift, och en vg-uppgift, som var för sig är tänkta att ge möjlighet att
 uppvisa de kompetenser som krävs för respektive betyg. För G krävs att g-delen genomförs, för vg
